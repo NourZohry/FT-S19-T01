@@ -9,7 +9,7 @@ import TableManagement from "../tablemanagement/TableManagement";
 export const PageContent = ({ setIsDrawerOpen, isDrawerOpen }) => {
   return (
     <>
-      <Paper>
+      <Paper elevation={1}>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <IconButton onClick={() => setIsDrawerOpen(!isDrawerOpen)}>

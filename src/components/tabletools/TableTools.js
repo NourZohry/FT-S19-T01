@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Typography, Paper, TextField, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 
-export const TableTools = ({userStatus, setUserStatus}) => {
+export const TableTools = ({ setSearchName, searchName, setSearchUsername, searchUsername, setSearchStatus, searchStatus }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Box>
@@ -10,6 +10,8 @@ export const TableTools = ({userStatus, setUserStatus}) => {
           label="Search..."
           type="search"
           variant="outlined"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
         />
       </Box>
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -17,6 +19,8 @@ export const TableTools = ({userStatus, setUserStatus}) => {
           id="outlined-basic"
           label="User Name"
           variant="outlined"
+          value={searchUsername}
+          onChange={(e) => setSearchUsername(e.target.value)}
         />
       </Box>
       <Box>
@@ -25,9 +29,9 @@ export const TableTools = ({userStatus, setUserStatus}) => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={userStatus}
             label="User Status"
-            onChange={(e) => setUserStatus(e.target.value)}
+            value={searchStatus}
+            onChange={(e) => setSearchStatus(e.target.value)}
           >
             <MenuItem value={"Any"}>Any</MenuItem>
             <MenuItem value={"Locked"}>Locked</MenuItem>
