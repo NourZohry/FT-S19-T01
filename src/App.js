@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import UserManagement from './components/usermanagement/UserManagement';
+import DrawerComponent from './components/drawer/Drawer';
 
 export default class App extends Component {
   render() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<UserManagement />} />
+          <Route path="/" element={<DrawerComponent />} />
         </Routes>
       </Router>
     )

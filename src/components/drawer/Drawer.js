@@ -1,146 +1,139 @@
-import React, { Component } from "react";
-import { Box, Toolbar, Drawer, Typography, IconButton, Icon, makeStyles, List, ListSubheader, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Drawer, Typography, IconButton, Icon, List, ListSubheader, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import PageContent from "../pagecontent/PageContent";
-import SendIcon from "@mui/icons-material/Send";
 
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
-import StarBorder from "@mui/icons-material/StarBorder";
 
-export default class DrawerComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isDrawerOpen: true, isOpen1: false, isOpen2: false, isOpen3: false };
-    this.handler = this.handler.bind(this);
-  }
+export const DrawerComponent = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen3, setIsOpen3] = useState(false);
 
-  handler() {
-    this.setState({
-      isDrawerOpen: !this.state.isDrawerOpen,
-    });
-  }
-
-  render() {
-    return (
-      <>
-        <Box sx={this.state.isDrawerOpen && { display: "flex", flexDirection: "row" }}>
-          <Drawer
-            sx={{
+  return (
+    <>
+      <Box sx={isDrawerOpen && { display: "flex", flexDirection: "row" }}>
+        <Drawer
+          sx={{
+            width: 220,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
               width: 220,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: 220,
-                boxSizing: "border-box",
-              },
-            }}
-            anchor="left"
-            open={this.state.isDrawerOpen}
-            variant="persistent"
-            //   onClose={() => this.setState({ isDrawerOpen: false })}
+              boxSizing: "border-box",
+            },
+          }}
+          anchor="left"
+          open={isDrawerOpen}
+          variant="persistent"
+        >
+          <Box
+            p={1}
+            width="200px"
+            textAlign="center"
           >
+            {/* Drawer Content Here */}
             <Box
-              p={1}
-              width="200px"
-              textAlign="center"
+              component="img"
+              sx={{
+                height: 100,
+                width: 100,
+              }}
+              alt="Reno Systems"
+              src={require("../../images/reno-logo.png")}
+            />
+          </Box>
+
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader
+                component="div"
+                id="nested-list-subheader"
+              >
+                Settings
+              </ListSubheader>
+            }
+          >
+            <ListItemButton onClick={() => setIsOpen1(!isOpen1)}>
+              <ListItemText primary="ATM Settings" />
+              {isOpen1 ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse
+              in={isOpen1}
+              timeout="auto"
+              unmountOnExit
             >
-              {/* Drawer Content Here */}
-              <Box
-                component="img"
-                sx={{
-                  height: 100,
-                  width: 100,
-                }}
-                alt="Reno Systems"
-                src={require("../../images/reno-logo.png")}
-              />
-            </Box>
+              <List
+                component="div"
+                disablePadding
+              >
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary="Starred" />
+                </ListItemButton>
+              </List>
+            </Collapse>
 
-            <List
-              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-              component="nav"
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader
-                  component="div"
-                  id="nested-list-subheader"
-                >
-                  Settings
-                </ListSubheader>
-              }
+            <ListItemButton onClick={() => setIsOpen2(!isOpen2)}>
+              <ListItemText primary="Business Setup" />
+              {isOpen2 ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse
+              in={isOpen2}
+              timeout="auto"
+              unmountOnExit
             >
-              <ListItemButton onClick={() => this.setState({ isOpen1: !this.state.isOpen1 })}>
-                <ListItemText primary="ATM Settings" />
-                {this.state.isOpen1 ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse
-                in={this.state.isOpen1}
-                timeout="auto"
-                unmountOnExit
+              <List
+                component="div"
+                disablePadding
               >
-                <List
-                  component="div"
-                  disablePadding
-                >
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Starred" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary="Starred" />
+                </ListItemButton>
+              </List>
+            </Collapse>
 
-              <ListItemButton onClick={() => this.setState({ isOpen2: !this.state.isOpen2 })}>
-                <ListItemText primary="Business Setup" />
-                {this.state.isOpen2 ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse
-                in={this.state.isOpen2}
-                timeout="auto"
-                unmountOnExit
+            <ListItemButton onClick={() => setIsOpen3(!isOpen3)}>
+              <ListItemText primary="User Management" />
+              {isOpen3 ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse
+              in={isOpen3}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List
+                component="div"
+                disablePadding
               >
-                <List
-                  component="div"
-                  disablePadding
-                >
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Starred" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary="Users" />
+                </ListItemButton>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary="Profiles" />
+                </ListItemButton>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary="Groups" />
+                </ListItemButton>
+              </List>
+            </Collapse>
 
-              <ListItemButton onClick={() => this.setState({ isOpen3: !this.state.isOpen3 })}>
-                <ListItemText primary="User Management" />
-                {this.state.isOpen3 ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse
-                in={this.state.isOpen3}
-                timeout="auto"
-                unmountOnExit
-              >
-                <List
-                  component="div"
-                  disablePadding
-                >
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Users" />
-                  </ListItemButton>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Profiles" />
-                  </ListItemButton>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary="Groups" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
+            <Typography m={2}>License Management</Typography>
+          </List>
+        </Drawer>
 
-              <Typography m={2}>License Management</Typography>
-            </List>
-          </Drawer>
-
-          <div>
-            <PageContent handler={this.handler} />
-          </div>
+        <Box sx={{ flexGrow: 1 }}>
+          <PageContent
+            setIsDrawerOpen={setIsDrawerOpen}
+            isDrawerOpen={isDrawerOpen}
+          />
         </Box>
-      </>
-    );
-  }
-}
+      </Box>
+    </>
+  );
+};
+
+export default DrawerComponent;
