@@ -7,10 +7,18 @@ import { useState } from "react";
 
 export const TableManagement = () => {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
+  const [enableEdit, setEnableEdit] = useState(false);
+  const [rowToEdit, setRowToEdit] = useState({});
   const [rows, setRows] = useState(() => {
     const localData = localStorage.getItem("data-rows");
     return localData ? JSON.parse(localData) : [];
   });
+
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [group, setGroup] = useState("Office");
+  const [status, setStatus] = useState("Active");
 
   useEffect(() => {
     localStorage.setItem("data-rows", JSON.stringify(rows));
@@ -21,43 +29,36 @@ export const TableManagement = () => {
       field: "id",
       headerName: "ID",
       width: 150,
-      editable: true,
     },
     {
       field: "name",
       headerName: "Name",
       width: 150,
-      editable: true,
     },
     {
       field: "username",
       headerName: "User Name",
       width: 150,
-      editable: true,
     },
     {
       field: "email",
       headerName: "Email Address",
       width: 200,
-      editable: true,
     },
     {
       field: "group",
       headerName: "Group",
       width: 100,
-      editable: true,
     },
     {
       field: "status",
       headerName: "Status",
       width: 150,
-      editable: true,
     },
     {
       field: "creationdate",
       headerName: "Created on",
       width: 150,
-      editable: true,
     },
   ];
 
@@ -87,16 +88,40 @@ export const TableManagement = () => {
         <Typography>User Management</Typography>
         <Button
           variant="contained"
-          onClick={() => setIsAddPopupOpen(true)}
+          onClick={() => {
+            setName("");
+            setUsername("");
+            setEmail("");
+            setGroup("");
+            setStatus("");
+            setEnableEdit(false);
+            setIsAddPopupOpen(true);
+          }}
+          color="success"
         >
           + Add New
         </Button>
+
+        
+
         {isAddPopupOpen && (
           <AddPopupForm
             isAddPopupOpen={isAddPopupOpen}
             setIsAddPopupOpen={setIsAddPopupOpen}
             setRows={setRows}
             rows={rows}
+            enableEdit={enableEdit}
+            rowToEdit={rowToEdit}
+            name={name}
+            setName={setName}
+            username={username}
+            setUsername={setUsername}
+            email={email}
+            setEmail={setEmail}
+            group={group}
+            setGroup={setGroup}
+            status={status}
+            setStatus={setStatus}
           />
         )}
       </Box>
@@ -113,6 +138,14 @@ export const TableManagement = () => {
         <Table
           rowsGiven={filteredRows()}
           columnsGiven={columns}
+          setEnableEdit={setEnableEdit}
+          setIsAddPopupOpen={setIsAddPopupOpen}
+          setRowToEdit={setRowToEdit}
+          setName={setName}
+          setUsername={setUsername}
+          setEmail={setEmail}
+          setGroup={setGroup}
+          setStatus={setStatus}
         />
       </Paper>
     </Box>

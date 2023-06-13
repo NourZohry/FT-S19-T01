@@ -1,23 +1,41 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows }) => {
+
+export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows, enableEdit, rowToEdit, name, setName, username, setUsername, email, setEmail, group, setGroup, status, setStatus}) => {
   // const row = {};
 
   const submitForm = (e) => {
+    console.log(name);
     e.preventDefault();
     setIsAddPopupOpen(false);
     console.log(e);
-    let row = {
-      id: 50,
-      name: e.target[0].value,
-      username: e.target[2].value,
-      email: e.target[4].value,
-      group: e.target[6].value,
-      status: e.target[8].value,
-      creationdate: "placeholder"
+    let row;
+    if (enableEdit === true) {
+      var rowIndex = rows.findIndex(row => row.id == rowToEdit.id);
+      let newRows = [...rows];
+      newRows[rowIndex].name = name;
+      newRows[rowIndex].username = username;
+      newRows[rowIndex].email = email;
+      newRows[rowIndex].group = group;
+      newRows[rowIndex].status = status;
+      setRows(newRows);
     }
-    setRows([...rows, row]);
+    else {
+      console.log(row);
+      row = {
+        id: Math.max.apply(Math, rows.map(function(row) { return row.id; })) + 1, // Sets ID as largest ID + 1 which doesn't work if there's deleting but it's fine for now
+        name: name,
+        username: username,
+        email: email,
+        group: group,
+        status: status,
+        creationdate: new Date().toISOString().split('T')[0]
+      }
+      console.log(row);
+      console.log([...rows,row]);
+      setRows([...rows, row]);
+    }
   };
 
   return (
@@ -26,7 +44,7 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
         open={isAddPopupOpen}
         onClose={() => setIsAddPopupOpen(false)}
       >
-        <DialogTitle>Add New User</DialogTitle>
+        <DialogTitle>{enableEdit === true ? "Edit User" : "Add New User"}</DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
             To subscribe to this website, please enter your email address here. We
@@ -43,6 +61,9 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
               label="Enter full name"
               type="text"
               fullWidth
+              // value={(enableEdit == true && rowToEdit != {} && rowToEdit != "") ? rowToEdit.name : ""}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               variant="outlined"
             />
             <TextField
@@ -52,7 +73,9 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
               label="Enter username"
               type="username"
               fullWidth
-              variant="outlined"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+                            variant="outlined"
             />
             <TextField
               required
@@ -61,7 +84,8 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
               label="Enter email"
               type="email"
               fullWidth
-              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}              variant="outlined"
             />
             <FormControl
               margin="dense"
@@ -72,7 +96,8 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
                 required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={"Office"}
+                value={group}
+                onChange={(e) => setGroup(e.target.value)}
                 label="User Group"
                 // onChange={handleChange}
               >
@@ -90,9 +115,10 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows 
                 required
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={"Active"}
                 label="Profile"
                 // onChange={handleChange}
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
               >
                 <MenuItem value={"Active"}>Active</MenuItem>
                 <MenuItem value={"Inactive"}>Inactive</MenuItem>
