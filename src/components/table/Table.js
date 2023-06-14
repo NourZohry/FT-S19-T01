@@ -2,11 +2,15 @@ import React from 'react'
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-
-export const Table = ({rowsGiven, columnsGiven, setEnableEdit, setIsAddPopupOpen, setRowToEdit, setName, setUsername, setEmail, setGroup, setStatus}) => {
+export const Table = ({rowsGiven, columnsGiven, setEnableEdit, setIsAddPopupOpen, setRowToEdit, setName, setUsername, setEmail, setGroup, setStatus, setSelectedCount}) => {
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid 
+      sx={{
+        '.MuiDataGrid-checkboxInput': {
+          color: "green!important"
+        }
+      }}
       onRowClick={(row) => {
         console.log(row);
         setEnableEdit(true);
@@ -20,9 +24,9 @@ export const Table = ({rowsGiven, columnsGiven, setEnableEdit, setIsAddPopupOpen
       }}
         rows={rowsGiven}
         columns={columnsGiven}
-        // onRowSelectionModelChange={(row) => {
-        //   // console.log(row);
-        // }}
+        onRowSelectionModelChange={(ids) => {
+          setSelectedCount(ids.length);
+        }}
         initialState={{
           pagination: {
             paginationModel: {

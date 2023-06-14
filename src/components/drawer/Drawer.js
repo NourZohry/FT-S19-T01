@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Drawer, Typography, IconButton, Icon, List, ListSubheader, ListItemButton, ListItemIcon, ListItemText, TextField, InputAdornment } from "@mui/material";
+import { Box, Drawer, Typography, IconButton, List, ListItemButton, ListItemText, TextField, InputAdornment } from "@mui/material";
 import PageContent from "../pagecontent/PageContent";
 
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -7,8 +7,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";
-
-const textColor = "white";
 
 export const DrawerComponent = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
@@ -32,7 +30,7 @@ export const DrawerComponent = () => {
           open={isDrawerOpen}
           variant="persistent"
         >
-          <Box sx={{ minHeight: "100vh", backgroundColor: "#050e2d" }}>
+          <Box sx={{ height: "100%", minHeight: "100%", backgroundColor: "#050e2d" }}>
             <Box
               p={1}
               width="200px"
@@ -59,28 +57,26 @@ export const DrawerComponent = () => {
                 InputProps={{
                   sx: { borderRadius: 10, backgroundColor: "white" },
                   endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton>
+                    <InputAdornment position="end" sx={{margin: "-5px"}}>
                         <SearchIcon />
-                      </IconButton>
                     </InputAdornment>
                   ),
                 }}
               />
             </Box>
 
-            <Box>
+            <Box sx={{display: "flex", alignItems: "center"}} ml={1}>
               <IconButton>
                 <DashboardIcon sx={{ color: "#828796" }} />
-                <Typography sx={{ color: "#828796" }}>Dashboard</Typography>
               </IconButton>
+                <Typography sx={{ color: "#828796" }}>Dashboard</Typography>
             </Box>
 
             <Box
               ml={2}
               mt={2}
             >
-              <Typography sx={{ color: "#4e5469" }}>Settings</Typography>
+              <Typography sx={{ color: "#4e5469", textTransform: "uppercase", fontSize: "14px" }}>Settings</Typography>
             </Box>
 
             <List

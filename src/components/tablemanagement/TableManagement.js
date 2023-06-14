@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Paper, TextField, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { Box, Button, Typography, Paper } from "@mui/material";
 import React, { useEffect } from "react";
 import Table from "../table/Table";
 import AddPopupForm from "../addpopupform/AddPopupForm";
@@ -19,6 +19,8 @@ export const TableManagement = () => {
   const [email, setEmail] = useState("");
   const [group, setGroup] = useState("Office");
   const [status, setStatus] = useState("Active");
+
+  const [selectedCount, setSelectedCount] = useState(0);
 
   useEffect(() => {
     localStorage.setItem("data-rows", JSON.stringify(rows));
@@ -64,19 +66,38 @@ export const TableManagement = () => {
 
   const [searchName, setSearchName] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
-  const [searchStatus, setSearchStatus] = useState("Any");
+  const [searchStatus, setSearchStatus] = useState([]);
+  const [searchDate, setSearchDate] = useState('');
+
+
+
 
   function filteredRows() {
-    let checkStatus = true;
-    let newRows;
-    if (searchStatus == "Any") {
-      checkStatus = false;
+    let newRows = [];
+    console.log(searchStatus);
+    if (searchStatus.length === 0 || searchStatus.includes("Any")) {
       newRows = rows;
     } else {
-      newRows = rows.filter((row) => {
-        return row.status === searchStatus;
+      rows.forEach(row => {
+        console.log(row);
+        searchStatus.forEach(status => {
+          if (row.status.includes(status)) {
+            console.log(row.status)
+            newRows.push(row);
+          }
+        });
       });
     }
+
+    if (searchDate != '') {
+      newRows = newRows.filter((row) => {
+        console.log("new row");
+        // console.log(row.creationdate.split('T')[0])
+        console.log(searchDate.toISOString().split('T')[0])
+        return row.creationdate === searchDate.toISOString().split('T')[0];
+      })
+    }
+
     return newRows.filter((row) => {
       return row.name.toLowerCase().includes(searchName.toLowerCase()) && row.username.toLowerCase().includes(searchUsername.toLowerCase());
     });
@@ -84,8 +105,8 @@ export const TableManagement = () => {
 
   return (
     <Box p={2}>
-      <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography>User Management</Typography>
+      <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} mb={2}>
+        <Typography fontWeight="bold" fontSize="24px">User Management</Typography>
         <Button
           variant="contained"
           onClick={() => {
@@ -98,11 +119,13 @@ export const TableManagement = () => {
             setIsAddPopupOpen(true);
           }}
           color="success"
+          sx={{
+            backgroundColor: "#22a565",
+            textTransform:"capitalize"
+          }}
         >
           + Add New
         </Button>
-
-        
 
         {isAddPopupOpen && (
           <AddPopupForm
@@ -134,6 +157,8 @@ export const TableManagement = () => {
           searchUsername={searchUsername}
           setSearchStatus={setSearchStatus}
           searchStatus={searchStatus}
+          setSearchDate={setSearchDate}
+          selectedCount={selectedCount}
         />
         <Table
           rowsGiven={filteredRows()}
@@ -146,6 +171,7 @@ export const TableManagement = () => {
           setEmail={setEmail}
           setGroup={setGroup}
           setStatus={setStatus}
+          setSelectedCount={setSelectedCount}
         />
       </Paper>
     </Box>
