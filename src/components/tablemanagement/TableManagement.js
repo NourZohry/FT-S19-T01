@@ -67,7 +67,8 @@ export const TableManagement = () => {
   const [searchName, setSearchName] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
   const [searchStatus, setSearchStatus] = useState([]);
-  const [searchDate, setSearchDate] = useState('');
+  const [searchDate1, setSearchDate1] = useState('');
+  const [searchDate2, setSearchDate2] = useState('');
 
 
 
@@ -86,9 +87,14 @@ export const TableManagement = () => {
       });
     }
 
-    if (searchDate != '') {
+    if (searchDate1 !== '') {
       newRows = newRows.filter((row) => {
-        return row.creationdate === searchDate.toISOString().split('T')[0];
+        return new Date(row.creationdate).getTime() >= new Date(searchDate1.toISOString().split('T')[0]).getTime();
+      })
+    }
+    if (searchDate2 !== '') {
+      newRows = newRows.filter((row) => {
+        return new Date(row.creationdate).getTime() <= new Date(searchDate2.toISOString().split('T')[0]).getTime();
       })
     }
 
@@ -151,7 +157,8 @@ export const TableManagement = () => {
           searchUsername={searchUsername}
           setSearchStatus={setSearchStatus}
           searchStatus={searchStatus}
-          setSearchDate={setSearchDate}
+          setSearchDate1={setSearchDate1}
+          setSearchDate2={setSearchDate2}
           selectedCount={selectedCount}
         />
         <Table

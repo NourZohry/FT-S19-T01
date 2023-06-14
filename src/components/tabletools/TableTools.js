@@ -1,12 +1,11 @@
 import React from "react";
-import { Box, Button, Typography, TextField, MenuItem, Select, InputLabel, FormControl, Divider, IconButton, InputAdornment, Checkbox, ListItemText } from "@mui/material";
+import { Box, Button, Typography, TextField, MenuItem, Select, InputLabel, FormControl, Divider, IconButton, Checkbox, ListItemText } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
 import LockIcon from "@mui/icons-material/Lock";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SearchIcon from "@mui/icons-material/Search";
 import DownloadIcon from "@mui/icons-material/Download";
-import { DateRangePicker, LocalizationProvider, SingleInputDateRangeField } from "@mui/x-date-pickers-pro";
+import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -14,7 +13,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const groups = ["Any", "Locked", "Inactive", "Active"];
 
-export const TableTools = ({ setSearchName, searchName, setSearchUsername, searchUsername, setSearchStatus, searchStatus, setSearchDate, selectedCount }) => {
+export const TableTools = ({ setSearchName, searchName, setSearchUsername, searchUsername, setSearchStatus, searchStatus, setSearchDate1, setSearchDate2, selectedCount }) => {
   return (
     <>
       {/* Top Bar */}
@@ -105,8 +104,14 @@ export const TableTools = ({ setSearchName, searchName, setSearchUsername, searc
               <DemoContainer components={["DatePicker"]}>
                 <DatePicker
                   slotProps={{ textField: { size: "small" } }}
-                  label="Creation Date"
-                  onChange={(value) => setSearchDate(new Date(value.$y.toString() + "-" + (value.$M + 1).toString() + "-" + (value.$D + 1).toString()))}
+                  label="Creation Date (Start)"
+                  onChange={(value) => setSearchDate1(new Date(value.$y.toString() + "-" + (value.$M + 1).toString() + "-" + (value.$D + 1).toString()))}
+                />
+
+                <DatePicker
+                  slotProps={{ textField: { size: "small" } }}
+                  label="Creation Date (End)"
+                  onChange={(value) => setSearchDate2(new Date(value.$y.toString() + "-" + (value.$M + 1).toString() + "-" + (value.$D + 1).toString()))}
                 />
               </DemoContainer>
             </LocalizationProvider>
