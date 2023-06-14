@@ -100,15 +100,17 @@ export const TableTools = ({ setSearchName, searchName, setSearchUsername, searc
         <DateRangePicker slots={{ field: SingleInputDateRangeField }} />
     </LocalizationProvider> */}
 
-          <LocalizationProvider  dateAdapter={AdapterDayjs}>
-            <DemoContainer  components={["DatePicker"]}>
-              <DatePicker
-                slotProps={{ textField: { size: 'small' } }}
-                label="Creation Date"
-                onChange={(value) => setSearchDate(new Date(value.$y.toString() + "-" + (value.$M+1).toString() + "-" + (value.$D+1).toString() ))}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
+          <Box mt={-1}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  slotProps={{ textField: { size: "small" } }}
+                  label="Creation Date"
+                  onChange={(value) => setSearchDate(new Date(value.$y.toString() + "-" + (value.$M + 1).toString() + "-" + (value.$D + 1).toString()))}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Box>
         </Box>
       </Box>
 

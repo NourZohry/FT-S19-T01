@@ -6,10 +6,8 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
   // const row = {};
 
   const submitForm = (e) => {
-    console.log(name);
     e.preventDefault();
     setIsAddPopupOpen(false);
-    console.log(e);
     let row;
     if (enableEdit === true) {
       var rowIndex = rows.findIndex(row => row.id === rowToEdit.id);
@@ -22,7 +20,6 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
       setRows(newRows);
     }
     else {
-      console.log(row);
       row = {
         id: (Math.max.apply(Math, rows.map(function(row) { return row.id; })) + 1 > 0 ? Math.max.apply(Math, rows.map(function(row) { return row.id; })) + 1 : 1), // Sets ID as largest ID + 1 which doesn't work if there's deleting but it's fine for now
         name: name,
@@ -32,8 +29,6 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
         status: status,
         creationdate: new Date().toISOString().split('T')[0]
       }
-      console.log(row);
-      console.log([...rows,row]);
       setRows([...rows, row]);
     }
   };

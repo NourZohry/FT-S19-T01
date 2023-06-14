@@ -12,7 +12,6 @@ export const Table = ({rowsGiven, columnsGiven, setEnableEdit, setIsAddPopupOpen
         }
       }}
       onRowClick={(row) => {
-        console.log(row);
         setEnableEdit(true);
         setIsAddPopupOpen(true);
         setRowToEdit(row.row);

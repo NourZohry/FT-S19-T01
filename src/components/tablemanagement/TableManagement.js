@@ -74,15 +74,12 @@ export const TableManagement = () => {
 
   function filteredRows() {
     let newRows = [];
-    console.log(searchStatus);
     if (searchStatus.length === 0 || searchStatus.includes("Any")) {
       newRows = rows;
     } else {
       rows.forEach(row => {
-        console.log(row);
         searchStatus.forEach(status => {
           if (row.status.includes(status)) {
-            console.log(row.status)
             newRows.push(row);
           }
         });
@@ -91,9 +88,6 @@ export const TableManagement = () => {
 
     if (searchDate != '') {
       newRows = newRows.filter((row) => {
-        console.log("new row");
-        // console.log(row.creationdate.split('T')[0])
-        console.log(searchDate.toISOString().split('T')[0])
         return row.creationdate === searchDate.toISOString().split('T')[0];
       })
     }
