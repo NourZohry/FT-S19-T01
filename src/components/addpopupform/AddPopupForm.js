@@ -1,16 +1,22 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
-
-export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows, enableEdit, rowToEdit, name, setName, username, setUsername, email, setEmail, group, setGroup, status, setStatus}) => {
+export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows, enableEdit, rowToEdit, name, setName, username, setUsername, email, setEmail, group, setGroup, status, setStatus }) => {
   // const row = {};
+
+  const deleteRow = (rowToDelete) => {
+    setIsAddPopupOpen(false);
+    setRows(rows.filter((row) => {
+      return row.id !== rowToDelete.id
+    }));
+  }
 
   const submitForm = (e) => {
     e.preventDefault();
     setIsAddPopupOpen(false);
     let row;
     if (enableEdit === true) {
-      var rowIndex = rows.findIndex(row => row.id === rowToEdit.id);
+      var rowIndex = rows.findIndex((row) => row.id === rowToEdit.id);
       let newRows = [...rows];
       newRows[rowIndex].name = name;
       newRows[rowIndex].username = username;
@@ -18,17 +24,31 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
       newRows[rowIndex].group = group;
       newRows[rowIndex].status = status;
       setRows(newRows);
-    }
-    else {
+    } else {
       row = {
-        id: (Math.max.apply(Math, rows.map(function(row) { return row.id; })) + 1 > 0 ? Math.max.apply(Math, rows.map(function(row) { return row.id; })) + 1 : 1), // Sets ID as largest ID + 1 which doesn't work if there's deleting but it's fine for now
+        id:
+          Math.max.apply(
+            Math,
+            rows.map(function (row) {
+              return row.id;
+            })
+          ) +
+            1 >
+          0
+            ? Math.max.apply(
+                Math,
+                rows.map(function (row) {
+                  return row.id;
+                })
+              ) + 1
+            : 1, // Sets ID as largest ID + 1 which doesn't work if there's deleting but it's fine for now
         name: name,
         username: username,
         email: email,
         group: group,
         status: status,
-        creationdate: new Date().toISOString().split('T')[0]
-      }
+        creationdate: new Date().toISOString().split("T")[0],
+      };
       setRows([...rows, row]);
     }
   };
@@ -41,22 +61,20 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle sx={{backgroundColor:"#050e2d", color:"#fff"}}>
-        <Box sx={{display: "flex", justifyContent:"space-between", alignItems:"center"}}>
-          <Typography sx={{fontSize:"20px", fontWeight:"bold"}}>{enableEdit === true ? "Edit User" : "Add New User"}</Typography>
-        
-        
-        <IconButton
-          aria-label="close"
-          onClick={() => setIsAddPopupOpen(false)}
-          sx={{
-            color: "#fff",
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        </Box>
-        
+        <DialogTitle sx={{ backgroundColor: "#050e2d", color: "#fff" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>{enableEdit === true ? "Edit User" : "Add New User"}</Typography>
+
+            <IconButton
+              aria-label="close"
+              onClick={() => setIsAddPopupOpen(false)}
+              sx={{
+                color: "#fff",
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
         </DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
@@ -67,7 +85,12 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
             id="addForm"
             onSubmit={submitForm}
           >
-            <Typography sx={{fontWeight:"bold"}} mt={2}>Full Name</Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              mt={2}
+            >
+              Full Name
+            </Typography>
             <TextField
               required
               margin="dense"
@@ -81,7 +104,12 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
               variant="outlined"
               size="small"
             />
-            <Typography sx={{fontWeight:"bold"}} mt={2}>User Name</Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              mt={2}
+            >
+              User Name
+            </Typography>
 
             <TextField
               required
@@ -92,10 +120,15 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
               fullWidth
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-                            variant="outlined"
-                            size="small"
+              variant="outlined"
+              size="small"
             />
-            <Typography sx={{fontWeight:"bold"}} mt={2}>Email Address</Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              mt={2}
+            >
+              Email Address
+            </Typography>
 
             <TextField
               required
@@ -105,17 +138,28 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
               type="email"
               fullWidth
               value={email}
-              onChange={(e) => setEmail(e.target.value)}              variant="outlined"
+              onChange={(e) => setEmail(e.target.value)}
+              variant="outlined"
               size="small"
             />
 
-<Typography sx={{fontWeight:"bold"}} mt={2}>User Group</Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              mt={2}
+            >
+              User Group
+            </Typography>
 
             <FormControl
               margin="dense"
               fullWidth
             >
-              <InputLabel size="small" id="demo-simple-select-label">User Group</InputLabel>
+              <InputLabel
+                size="small"
+                id="demo-simple-select-label"
+              >
+                User Group
+              </InputLabel>
               <Select
                 required
                 labelId="demo-simple-select-label"
@@ -123,9 +167,8 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
                 value={group}
                 onChange={(e) => setGroup(e.target.value)}
                 label="User Group"
-                
                 // onChange={handleChange}
-              size="small"
+                size="small"
               >
                 <MenuItem value={"Office"}>Office</MenuItem>
                 <MenuItem value={"Managers"}>Managers</MenuItem>
@@ -133,13 +176,23 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
               </Select>
             </FormControl>
 
-            <Typography sx={{fontWeight:"bold"}} mt={2}>Assign Profile</Typography>
+            <Typography
+              sx={{ fontWeight: "bold" }}
+              mt={2}
+            >
+              Assign Profile
+            </Typography>
 
             <FormControl
               margin="dense"
               fullWidth
             >
-              <InputLabel size="small" id="demo-simple-select-label">Profile</InputLabel>
+              <InputLabel
+                size="small"
+                id="demo-simple-select-label"
+              >
+                Profile
+              </InputLabel>
               <Select
                 required
                 labelId="demo-simple-select-label"
@@ -157,36 +210,56 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
             </FormControl>
           </form>
         </DialogContent>
-        <Divider>
-
-        </Divider>
+        <Divider></Divider>
         <DialogActions>
-          <Box pl={2} pr={2} pt={1} pb={1} sx={{display: 'flex', gap: "10px"}}>
-          <Button
-            variant="outline"
-            onClick={() => setIsAddPopupOpen(false)}
+          <Box
+            pl={2}
+            pr={2}
+            pt={1}
+            pb={1}
+            sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+            <Box>
+              {enableEdit && 
+              <Button variant="contained"
+            onClick={() => deleteRow(rowToEdit)}
+            color="error"
             sx={{
-              textTransform:"capitalize",
-              fontWeight: "bold",
+              textTransform: "capitalize",
 
-              border: "1px solid #8a95ab"
+              border: "1px solid #8a95ab",
             }}
-          >
-            Cancel
-          </Button>
-          {/* <Button onClick={handleClose}>Subscribe</Button> */}
-          <Button
-            form="addForm"
-            variant="contained"
-            type="submit"
-            color="success"
-            sx={{
-              backgroundColor: "#22a565",
-              textTransform:"capitalize"
-            }}
-          >
-            Add
-          </Button>
+            >Delete
+              </Button>
+              }
+            </Box>
+            <Box sx={{ display: "flex", gap: "10px"}}>
+              <Button
+                variant="outline"
+                onClick={() => setIsAddPopupOpen(false)}
+                sx={{
+                  textTransform: "capitalize",
+                  fontWeight: "bold",
+
+                  border: "1px solid #8a95ab",
+                }}
+              >
+                Cancel
+              </Button>
+              {/* <Button onClick={handleClose}>Subscribe</Button> */}
+              <Button
+                form="addForm"
+                variant="contained"
+                type="submit"
+                color="success"
+                sx={{
+                  backgroundColor: "#22a565",
+                  textTransform: "capitalize",
+                }}
+              >
+                {enableEdit === true ? "Edit" : "Add"}
+              </Button>
+            </Box>
           </Box>
         </DialogActions>
       </Dialog>
