@@ -1,8 +1,31 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+/* eslint-disable no-useless-escape */
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useForm } from "react-hook-form";
+// import { DevTool } from "@hookform/devtools";
+
+import './AddPopupForm.css'
 
 export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows, enableEdit, rowToEdit, name, setName, username, setUsername, email, setEmail, group, setGroup, status, setStatus }) => {
   // const row = {};
+
+  const form = useForm({
+    defaultValues: {
+      fullname: enableEdit ? name : "",
+      username: enableEdit ? username : "",
+      email: enableEdit ? email : "",
+      group: enableEdit ? group : "",
+      status: enableEdit ? status : ""
+    }
+  });
+  // const { register, control, handleSubmit, formState } = form;
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
+
+  const onSubmit = (data) => {
+    // console.log('submitted.', data);
+    submitForm();
+  }
 
   const deleteRow = (rowToDelete) => {
     setIsAddPopupOpen(false);
@@ -11,8 +34,8 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
     }));
   }
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  const submitForm = () => {
+    // e.preventDefault();
     setIsAddPopupOpen(false);
     let row;
     if (enableEdit === true) {
@@ -77,138 +100,77 @@ export const AddPopupForm = ({ isAddPopupOpen, setIsAddPopupOpen, rows, setRows,
           </Box>
         </DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText> */}
-          <form
-            id="addForm"
-            onSubmit={submitForm}
-          >
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              mt={2}
-            >
-              Full Name
-            </Typography>
-            <TextField
-              required
-              margin="dense"
-              id="fullname"
-              label="Enter full name"
-              type="text"
-              fullWidth
-              // value={(enableEdit == true && rowToEdit != {} && rowToEdit != "") ? rowToEdit.name : ""}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              variant="outlined"
-              size="small"
-            />
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              mt={2}
-            >
-              User Name
-            </Typography>
+          <form onSubmit={handleSubmit(onSubmit)} id="addForm" noValidate className="popup-form">
+            <label htmlFor="fullname">Full Name</label>
+            <input type="text" id="fullname" {...register("fullname", {
+              required: 'Full name is required',
+              onChange: (e) => {setName(e.target.value)}
+            })} />
+            <p className="form-error-msg">{errors.fullname?.message}</p>
 
-            <TextField
-              required
-              margin="dense"
-              id="username"
-              label="Enter username"
-              type="username"
-              fullWidth
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              variant="outlined"
-              size="small"
-            />
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              mt={2}
-            >
-              Email Address
-            </Typography>
+            <label htmlFor="username">Username</label>
+            <input type="text" id="username" {...register("username", {
+              required: 'Username is required',
+              onChange: (e) => {setUsername(e.target.value)}
+            })} />
+            <p className="form-error-msg">{errors.username?.message}</p>
 
-            <TextField
-              required
-              margin="dense"
-              id="email"
-              label="Enter email"
-              type="email"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              variant="outlined"
-              size="small"
-            />
 
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              mt={2}
-            >
-              User Group
-            </Typography>
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" {...register("email", {
+              required: 'Email is required',
+              onChange: (e) => {setEmail(e.target.value)},
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,  
+                message: "Invalid email"
+              }
+            })} />
+            <p className="form-error-msg">{errors.email?.message}</p>
 
-            <FormControl
-              margin="dense"
-              fullWidth
+            <label htmlFor="group">Group</label>
+            <select name="group" id="group" {...register("group", {
+              required: 'Group is required',
+              onChange: (e) => {setGroup(e.target.value)},
+              validate: {
+                notSelected: (fieldValue) => {
+                  return (
+                    fieldValue !== "Select..." || "Select a group"
+                  )
+                }
+              }
+            })}
             >
-              <InputLabel
-                size="small"
-                id="demo-simple-select-label"
-              >
-                User Group
-              </InputLabel>
-              <Select
-                required
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={group}
-                onChange={(e) => setGroup(e.target.value)}
-                label="User Group"
-                // onChange={handleChange}
-                size="small"
-              >
-                <MenuItem value={"Office"}>Office</MenuItem>
-                <MenuItem value={"Managers"}>Managers</MenuItem>
-                <MenuItem value={"Head Office"}>Head Office</MenuItem>
-              </Select>
-            </FormControl>
+              <option value="Select..." selected disabled>Select...</option>
+              <option value="Office">Office</option>
+              <option value="Managers">Managers</option>
+              <option value="Head Office">Head Office</option>
+            </select>
+            <p className="form-error-msg">{errors.group?.message}</p>
 
-            <Typography
-              sx={{ fontWeight: "bold" }}
-              mt={2}
+            <label htmlFor="status">Status</label>
+            <select name="status" id="status"  {...register("status", {
+              required: 'Status is required',
+              onChange: (e) => {setStatus(e.target.value)},
+              validate: {
+                notSelected: (fieldValue) => {
+                  return (
+                    fieldValue !== "Select..." || "Select a status"
+                  )
+                }
+              }
+            })}
             >
-              Assign Profile
-            </Typography>
+              <option value="Select..." selected disabled>Select...</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Locked">Locked</option>
+            </select>
+            <p className="form-error-msg">{errors.status?.message}</p>
 
-            <FormControl
-              margin="dense"
-              fullWidth
-            >
-              <InputLabel
-                size="small"
-                id="demo-simple-select-label"
-              >
-                Profile
-              </InputLabel>
-              <Select
-                required
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Profile"
-                // onChange={handleChange}
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                size="small"
-              >
-                <MenuItem value={"Active"}>Active</MenuItem>
-                <MenuItem value={"Inactive"}>Inactive</MenuItem>
-                <MenuItem value={"Locked"}>Locked</MenuItem>
-              </Select>
-            </FormControl>
+            
           </form>
+          {/* <DevTool control={control}/> */}
+
         </DialogContent>
         <Divider></Divider>
         <DialogActions>

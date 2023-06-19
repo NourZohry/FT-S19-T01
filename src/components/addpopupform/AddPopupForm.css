@@ -1,0 +1,17 @@
+.popup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-form input {
+    height: 30px;
+}
+
+.popup-form select {
+    height: 36px;
+}
+
+.form-error-msg {
+    color: red;
+    margin-top: 0px;
+}
